@@ -4,7 +4,7 @@ from dash import html, dcc
 from dash.dependencies import Input, Output, State
 import dash_bootstrap_components as dbc
 from app import app
-
+from globals import *
 from datetime import datetime, date
 import plotly.express as px
 import numpy as np
@@ -66,8 +66,9 @@ layout = dbc.Col([
                             dbc.Col([
                                 dbc.Label("Extras"),
                                 dbc.Checklist(
-                                    options=[],
-                                    value=[],
+                                    options=[{"label": "Foi recebida", "value": 1},
+                                        {"label": "Receita Recorrente", "value": 2}],
+                                    value=[1],
                                     id='switches-input-receitas',
                                     switch=True
                                 )
@@ -75,7 +76,9 @@ layout = dbc.Col([
                             
                             dbc.Col([
                                 html.Label('Categoria da receita'),
-                                dbc.Select(id='select_receita', options=[], value=[])
+                                dbc.Select(id='select_receita',
+                                options=[{'label': i, 'value': i} for i in cat_receita], 
+                                value=cat_receita[0])
                             ], width=4)
                         ], style={'margin-top': '25px'}),
                         
@@ -158,7 +161,9 @@ layout = dbc.Col([
                             
                             dbc.Col([
                                 html.Label('Categoria da despesa'),
-                                dbc.Select(id='select_despesa', options=[], value=[])
+                                dbc.Select(id='select_despesa', 
+                                options=[{'label': i, 'value': i} for i in cat_despesa], 
+                                value=cat_despesa[0])
                             ], width=4)
                         ], style={'margin-top': '25px'}),
                         
@@ -187,7 +192,7 @@ layout = dbc.Col([
                                             dbc.Button('Remover', color='warning', id='remove-category-despesa', style={'margin-top': '20px'}),
                                         ], width=6)
                                     ])
-                                ], title='Adicioonar/Remover Categorias')
+                                ], title='Adicionar/Remover Categorias')
                             ], flush=True, start_collapsed=True, id='accordion-despesa'),
                             
                             html.Div(id='id_teste_despesa', style={'padding-top': '20px'}),
@@ -238,3 +243,32 @@ def toggle_modal(n1, is_open):
 def toggle_modal(n1, is_open):
     if n1:
         return not is_open
+    
+@app.callback(
+    Output('store-receitas', 'data'),
+    Input('salvar_receita', 'n_clicks'),
+    [
+        State('txt-receita', 'value'),
+        State("valor_receita", "value"),
+        State("date-receitas", "date"),
+        State("switches-input-receitas", "value"),
+        State("select_receita", "value"),
+        State('store-receitas', 'data')
+    ]
+)
+def salve_form_receita(n, descricao, valor, date, switches, categoria, dict_receitas):
+    
+    df_receitas = pd.DataFrame(dict_receitas)
+    
+    if n and not(valor == "" or valor == None):
+        valor = round(float(valor),2)
+        date = pd.to_datetime(date).date()
+        categoria = categoria[0]
+        recebido = 1 if 1 in switches else 0
+        fixo = 1 if 2 in switches else 0
+        
+        df_receitas.loc[df_receitas.shape[0]] = [valor, recebido, fixo, date, categoria, descricao]
+        df_receitas.to_csv("df_receitas.csv")
+    
+    data_return = df_receitas.to_dict()
+    return data_return
