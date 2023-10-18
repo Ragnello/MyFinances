@@ -31,6 +31,7 @@ MyFinances
 ├── app.py
 ├── myindex.py
 ├── README.md
+├── globals.py
 ├── requirements.txt
 ```
 
