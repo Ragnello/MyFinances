@@ -39,7 +39,7 @@ layout = dbc.Col([
         dbc.Col([
             dbc.CardGroup([
                 dbc.Card([
-                    html.Legend('Saldo'),
+                    html.Legend('Receita'),
                     html.H5('R$ 10000', id='p-receita-dashboards', style={})
                 ], style={'padding-left': '20px', 'padding-top': '10px'}),
                 dbc.Card(
