@@ -98,7 +98,7 @@ layout = dbc.Col([
                                         dbc.Col([
                                             html.Legend('Excluir categorias', style={'color': 'red'}),
                                             dbc.Checklist(
-                                                id='checkedlist-selected-style-receita',
+                                                id='checklist-selected-style-receita',
                                                 options=[{"label": i, "value": i} for i in cat_receita],
                                                 value=[],
                                                 label_checked_style={'color': 'red'},
@@ -304,6 +304,45 @@ def salve_form_despesa(n, descricao, valor, date, switches, categoria, dict_desp
     
     data_return = df_despesas.to_dict()
     return data_return
+
+# Callback para o funcionamento dos botões de add/remover categorias de receitas
+@app.callback(
+    [
+        Output("select_receita", "options"),
+        Output('checklist-selected-style-receita', 'options'),
+        Output('checklist-selected-style-receita', 'value'),
+        Output('stored-cat-receitas', 'data'),
+    ],
+    
+    [
+        Input("add-category-receita", "n_clicks"),
+        Input("remove-category-receita", "n_clicks")
+    ],
+    
+    [
+        State("input-add-receita", "value"),
+        State('checklist-selected-style-receita', 'value'),
+        State('stored-cat-receitas', 'data')
+    ]
+)
+def add_category(n, n2, txt, check_delete, data):
+    
+    cat_receita = list(data["Categoria"].values())
+    
+    # Adição de categoria nas receitas
+    if n and not(txt == "" or txt == None):
+        cat_receita = cat_receita + [txt] if txt not in cat_receita else cat_receita
+    
+    if n2:
+        if len(check_delete) > 0:
+            cat_receita = [i for i in cat_receita if i not in check_delete]
+            
+    opt_receita = [{"label": i, "value": i} for i in cat_receita]
+    df_cat_receita = pd.DataFrame(cat_receita, columns=['Categoria'])
+    df_cat_receita.to_csv("df_cat_receita.csv")
+    data_return = df_cat_receita.to_dict()
+        
+    return [opt_receita, opt_receita, [], data_return]
 
 # Callback para o funcionamento dos botões de add/remover categorias de despesas
 @app.callback(
