@@ -51,3 +51,7 @@ Para atualizar o repositório Github, basta ter o Git instalado e seguir os segu
   5. Adicione todas as mudanças -> `git add .`
   6. Commit das mudanças -> `git commit -m "Mensagem de integração das mudanças"`
   7. Atualize o repositório Github -> `git push origin main`
+  
+  (OPCIONAL) Caso não vá utilizar mais a branch, poderá excluí-la com os seguintes comandos:
+    - Excluir localmente -> `git branch -d nomedabranch`
+    - Excluir remotamente -> `git push origin --delete nomedabranch`
