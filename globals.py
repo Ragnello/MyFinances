@@ -2,8 +2,8 @@ import os
 import pandas as pd
 
 if("df_receitas.csv" in os.listdir()) and ("df_despesas.csv" in os.listdir()):
-    df_receitas = pd.read_csv("df_receitas.csv", index_col=0, parse_dates=True)
-    df_despesas = pd.read_csv("df_despesas.csv", index_col=0, parse_dates=True)
+    df_receitas = pd.read_csv("df_receitas.csv", index_col=0)
+    df_despesas = pd.read_csv("df_despesas.csv", index_col=0)
     df_receitas["Data"] = pd.to_datetime(df_receitas["Data"])
     df_receitas["Data"] = df_receitas["Data"].apply(lambda x: x.date())
     df_despesas["Data"] = pd.to_datetime(df_despesas["Data"])
@@ -28,8 +28,8 @@ if("df_cat_receita.csv" in os.listdir()) and ("df_cat_despesa.csv" in os.listdir
     cat_despesa = df_cat_despesa.values.tolist()
     
 else:
-    cat_receita = {'Categoria': ["Salário", "Investimento", "Aula", "Serviço Clínica"]}
-    cat_despesa = {'Categoria': ["Alimentação", "Aluguel", "Combustível", "Saúde", "Lazer"]}
+    cat_receita = {'Categoria': ["cat1", "cat2", "cat3"]}
+    cat_despesa = {'Categoria': ["cat1", "cat2", "cat3"]}
     
     df_cat_receita = pd.DataFrame(cat_receita)
     df_cat_despesa = pd.DataFrame(cat_despesa)

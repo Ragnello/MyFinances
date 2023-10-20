@@ -220,10 +220,6 @@ layout = dbc.Col([
                 )
             ], id='sidebar_completa')
 
-
-
-
-
 # =========  Callbacks  =========== #
 # Pop-up receita
 @app.callback(

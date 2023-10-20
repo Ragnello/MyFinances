@@ -137,7 +137,7 @@ def saldo_receitas(data):
     valor = df['Valor'].sum()
     val = df.Categoria.unique().tolist()
     
-    return ([{"label": x, "value": x} for x in val], val, f"R$ {valor}")
+    return ([{"label": x, "value": x} for x in val], val, f"R$ {valor:.2f}")
 
 # Callback para atualizar o card de despesas
 @app.callback(
@@ -155,7 +155,7 @@ def saldo_despesas(data):
     valor = df['Valor'].sum()
     val = df.Categoria.unique().tolist()
     
-    return ([{"label": x, "value": x} for x in val], val, f"R$ {valor}")
+    return ([{"label": x, "value": x} for x in val], val, f"R$ {valor:.2f}")
 
 # Callback para atualizar o card de saldo total
 @app.callback(
@@ -172,7 +172,7 @@ def saldo_total(receitas, despesas):
     
     valor = df_receitas['Valor'].sum() - df_despesas['Valor'].sum()
     
-    return f"R$ {valor}"
+    return f"R$ {valor:.2f}"
 
 # ---------- Callbacks de gráficos
 

@@ -29,10 +29,6 @@ MyFinances
 │   ├── extratos.py
 │   ├── sidebar.py
 ├── app.py
-├── df_cat_despesa.csv
-├── df_cat_receita.csv
-├── df_despesas.csv
-├── df_receitas.csv
 ├── globals.py
 ├── myindex.py
 ├── README.md
